@@ -10,6 +10,7 @@ import { ALL_MODEL_IDS } from "./models";
 
 const ModelIdSchema = z.enum([
   "claude-opus-4.7",
+  "claude-opus-4.6",
   "claude-sonnet-4.6",
   "claude-haiku-4.5",
   "gpt-5.4",
@@ -37,12 +38,17 @@ Respond with STRICT JSON in this exact shape:
 }
 
 Allowed model IDs (use exactly these strings):
-- "claude-opus-4.7"   — best for planning, architecture, hard reasoning, multi-file refactors, polished writing
+- "claude-opus-4.7"   — best agentic coding, autonomous multi-file refactors, high-res vision tasks, literal instruction following, architecture
+- "claude-opus-4.6"   — extended thinking with budget control, fast mode (2.5x speed), warmer collaborative tone, strong reasoning when speed matters
 - "claude-sonnet-4.6" — default for coding, moderate analysis, longer batch work
 - "claude-haiku-4.5"  — cheapest/fastest. Simple lookups, formatting, classification, one-line factual
 - "gpt-5.4"           — agentic computer/browser use, full-res vision, real-time UI operation
 - "gpt-5.3-codex"     — terminal loops, "find the bug", running tests until green, CI/CD
 - "gemini-3.1-pro"    — multimodal (image/PDF/video) and giant-context (>200K tokens) tasks
+
+Key difference: claude-opus-4.7 vs claude-opus-4.6:
+- 4.7: Harder agentic tasks, autonomous coding (70% CursorBench vs 58%), high-res vision (3.75MP), uses 2x fewer LLM calls, more direct/opinionated tone, literal instruction following. No extended thinking budgets, no fast mode.
+- 4.6: When user needs fast mode (speed priority), extended thinking with explicit budget control, warmer/collaborative tone, or has prompts built for generalized instruction following. Also good for brainstorming where creative latitude helps.
 
 Routing rules (priority order — apply the first matching rule):
 1. Prompt mentions images, PDFs, video, screenshots, or pasted long content (>200K tokens of input)  → gemini-3.1-pro
@@ -50,9 +56,10 @@ Routing rules (priority order — apply the first matching rule):
 3. Prompt is "run commands until X works" / agentic shell loop / iterate against tests              → gpt-5.3-codex
 4. Prompt is "find the bug" / debug / "tests pass but prod fails"                                    → gpt-5.3-codex
 5. Prompt is a trivial lookup, reformatting, translation, single-line factual, or classification    → claude-haiku-4.5 (effort: none)
-6. Prompt is plan/spec/architecture/design/refactor across many files / explain WHY                  → claude-opus-4.7 (effort: high)
-7. Prompt is general coding, writing, moderate analysis, longer-running tasks                        → claude-sonnet-4.6 (effort: low or medium)
-8. Genuinely ambiguous or unclassifiable                                                              → claude-sonnet-4.6 (effort: medium) as a safe default
+6. Prompt is hard autonomous agentic coding, multi-file refactor, architecture, high-res vision      → claude-opus-4.7 (effort: high)
+7. Prompt needs speed/fast mode, extended thinking budgets, brainstorming, or warmer collaborative style → claude-opus-4.6 (effort: high)
+8. Prompt is general coding, writing, moderate analysis, longer-running tasks                        → claude-sonnet-4.6 (effort: low or medium)
+9. Genuinely ambiguous or unclassifiable                                                              → claude-sonnet-4.6 (effort: medium) as a safe default
 
 Effort guidelines:
 - "none"   — straightforward, no thinking needed

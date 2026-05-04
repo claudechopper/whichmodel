@@ -10,9 +10,19 @@ export const MODELS: Record<ModelId, ModelInfo> = {
     provider: "Anthropic",
     icon: "🧠",
     superpower:
-      "End-to-end reasoning, clean code, multi-file refactors, planning, writing.",
+      "Best agentic coding (70% CursorBench), high-res vision (3.75MP), literal instruction following, 2x fewer LLM calls.",
     contextWindow: "1M tokens",
     cliUrl: "https://claude.ai · Claude Code CLI",
+  },
+  "claude-opus-4.6": {
+    id: "claude-opus-4.6",
+    label: "Claude Opus 4.6",
+    provider: "Anthropic",
+    icon: "🔬",
+    superpower:
+      "Extended thinking with budget control, fast mode (2.5x speed), warmer tone. Strong reasoning at lower latency.",
+    contextWindow: "1M tokens",
+    cliUrl: "https://claude.ai · Claude Code CLI (`/model opus-4.6`)",
   },
   "claude-sonnet-4.6": {
     id: "claude-sonnet-4.6",
